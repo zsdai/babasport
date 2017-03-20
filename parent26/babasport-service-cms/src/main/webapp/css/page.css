@@ -1,0 +1,38 @@
+/*page*/
+.page{width:98%;margin:10px auto 0;overflow:hidden;clear:both}
+.page var{margin:0 4px}
+.page input{vertical-align:middle}
+.page .l{padding-left:6px}
+.page .l input,.page .l select{margin-right:6px}
+.page .r{padding:0 6px}
+.page .r .txts{width:40px;margin-right:6px}
+.page .l a.inb,.page .r a,.page .r span{margin-right:6px;padding:0 5px;text-align:center;vertical-align:middle}
+
+.page_a{}
+.page_a input{border:1px solid #cfdced}
+.page_a .hand{height:20px;line-height:18px;padding:0 4px;font-weight:bold;color:#06c;background-color:#e9f0f3}
+.page_a a,.page_a span{height:18px;line-height:18px}
+.page_a a{color:#06c;border:1px solid #cfdced;background-color:#e9f0f3}
+.page_a span{color:#666;cursor:default;border:1px solid #ccc;background-color:#eee}
+.page_a a:hover{color:#f24503;text-decoration:none;border:1px solid #0097f9;background-color:#b0d5ed}
+
+.page_b{}
+.page_b .txts{margin-left:6px}
+.page_b a,.page_b span{min-width:16px;_width:16px;height:24px;line-height:24px}
+.page_b a{color:#333;border:1px solid #dfdfdf;background-color:#fff}
+.page_b span{color:#666;cursor:default;border:1px solid #ccc;background-color:#fff}
+.page_b a:hover,.page_b .current{color:#fff;text-decoration:none;border:1px solid #3c6bc2;background-color:#39c}
+.page_b .current{font-weight:bold}
+.page_b .break{font-weight:bold;border:0;background:none}
+
+.page_c{}
+.page_c .txts{margin-left:6px}
+.page_c a,.page_c span{height:24px;line-height:24px}
+.page_c a{color:#06c;border:1px solid #fff;background-color:#fff}
+.page_c a:hover{color:#055d90;text-decoration:none;border:1px solid #055d90;background-color:#fff}
+.page_c .current{font-weight:bold}
+.page_c .break{font-weight:bold}
+.page_c .dev{font-size:14px;margin:0 2px}
+
+/* other */
+.inb,.inb_a a,form .pos{display:-moz-inline-block;display:-moz-inline-box;display:inline-block}

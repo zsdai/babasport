@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.core.dao.product.BrandMapper">
+	<select id="queryBrandByCondition" parameterType="BrandQueryVO" resultMap="brand">
+		select id,name,description,img_Url, sort ,is_Display
+		from bbs_brand
+		<where>
+			<if test="name!=null">
+				name like "%"#{name}"%"
+			</if>
+			<if test="isDisplay!=null">
+				and is_Display = #{isDisplay}
+			</if>
+		</where>
+		<if test="startRow!=null">
+			limit #{startRow},#{pageSize}
+		</if>
+	</select>
+	<resultMap type="Brand" id="brand">
+		<result column="img_Url" property="imgUrl"/>
+		<result column="is_Display" property="isDisplay"/>
+	</resultMap>
+	<!-- 查询分页总条数 -->
+	<select id="queryTotalCount" parameterType="BrandQueryVO" resultType="Integer">
+		select count(1)
+		from bbs_brand
+		<where>
+			<if test="name!=null">
+				name like "%"#{name}"%"
+			</if>
+			<if test="isDisplay!=null">
+				and is_Display = #{isDisplay}
+			</if>
+		</where>
+	</select>
+	<!-- 根据id查询 -->
+		<select id="queyBrandById" parameterType="Integer" resultMap="brand">
+		select id,name,description,img_Url, sort ,is_Display
+		from bbs_brand
+		where id= #{id}
+	</select>
+	<!-- 根据id修改 -->
+	<update id="updateBrandById" parameterType="Brand">
+		update bbs_brand
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="description!=null">
+				description=#{description},
+			</if>
+			<if test="imgUrl!=null">
+				img_Url=#{imgUrl},
+			</if>
+			<if test="sort!=null">
+				sort=#{sort},
+			</if>
+			<if test="isDisplay!=null">
+				is_Display=#{isDisplay}
+			</if>
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<!-- 批量删除 -->
+	<delete id="deleteByIds" parameterType="Integer[]">
+		delete from bbs_brand
+		<where>
+			<foreach collection="array" item="id" open="id IN (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+</mapper>
