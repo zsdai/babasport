@@ -15,7 +15,11 @@
    <link href="/css/purchase.2012.css?v=201410141639" rel="stylesheet" type="text/css">
    <title>我的购物车 - 淘淘商城</title>
    <script>
-   	var pageConfig  = {};
+   //结算
+   function trueBuy(){
+	   $("#jvForm").submit();
+   }
+   
    </script>
 <body> 
 <!--shortcut start-->
@@ -36,12 +40,12 @@
 	<div class="cart-hd group">
 		<h2>我的购物车</h2>
 	</div>
+	<form id="jvForm" method="post" action="/buyer/trueBuy" >
 	<div id="show">
-	
-<div class="cart-frame">
-    <div class="tl"></div>
-    <div class="tr"></div>
-</div>
+	<div class="cart-frame">
+	    <div class="tl"></div>
+	    <div class="tr"></div>
+	</div>
 <div class="cart-inner">
     <div class="cart-thead clearfix">
         <div class="column t-checkbox form"><input data-cart="toggle-cb" name="toggle-checkboxes" id="toggle-checkboxes_up" type="checkbox" checked="" value=""><label for="toggle-checkboxes_up">全选</label></div>
@@ -134,8 +138,8 @@
                           <a href="" class="combine-btn">不支持合并付款</a>
                       </span>
                       <span class="fore2 hide" style="display: inline;">
-                          <a href="javascript:goToOverseaOrder();" class="checkout-jdInt">去淘淘国际结算<b></b></a>
-                          <a href="javascript:goToOrder();" class="checkout-jd">去淘淘结算<b></b></a>
+                         <!--  <a href="javascript:goToOverseaOrder();" class="checkout-jdInt">去淘淘国际结算<b></b></a> -->
+                          <a href="javascript:trueBuy();" class="checkout-jd">去淘淘结算<b></b></a>
                       </span>
                   </span>
               </div>
@@ -146,6 +150,7 @@
       </div></div>
 </div><!-- cart-inner结束 -->
 </div>
+</form>
 </div>
 <!--推荐位html修改处-->
 

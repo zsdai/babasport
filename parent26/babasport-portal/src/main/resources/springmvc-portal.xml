@@ -39,6 +39,15 @@
 		<!-- 导入Dubbo的配置 -->
 		<import resource="dubbo-consumer.xml"/>
 		
+		<!-- 拦截器 -->
+		<mvc:interceptors>
+			<!-- 判断用户是否登录 -->
+			<mvc:interceptor>
+				<mvc:mapping path="/buyer/**"/>
+				<bean class="com.itheima.core.interceptor.BuyerInterceptor"></bean>
+			</mvc:interceptor>
+		</mvc:interceptors>
+		
 		<!-- 配置自定义转换器 -->
 		<bean id="conversionServiceFactoryBean" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 			<property name="converters">
