@@ -188,4 +188,16 @@ public class CartController {
 		model.addAttribute("buyerCart", buyerCart);
 		return "cart";
 	}
+	
+	/**
+	 * 结算
+	 * @return
+	 */
+	@RequestMapping(value="/buyer/trueBuy")
+	public String trueBuy(Long[] ids){
+		//1、判断用户是否登陆   1）未登陆 跳转到登陆页面 跳转到首页  2）登陆 放行
+		//2、判断购物车中是否有商品 1）无商品 刷新购物车页面进行提示 2）有商品  继续判断
+		//3、判断购物车中商品是否有货 1）无货 刷新购物车页面进行无货提示 2）有货  真过了进入订单提交页面
+		return "order-cart";
+	}
 }
