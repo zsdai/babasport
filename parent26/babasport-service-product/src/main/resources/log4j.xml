@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                value="%p [%t] %c{1}.%M | %m%n"/>
+        </layout>
+    </appender>
+    
+     <!-- %d %-5p [%c] (%t) %m%n -->
+	<appender name="dailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Threshold" value="info"></param>	
+		<param name="ImmediateFlush" value="true"></param>
+		<!-- <param name="File" value="/opt/applog/bbs.log"></param> -->
+		<param name="File" value="D:/opt/applog/bbs.log"></param>
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c{1}] [%t] %m%n"></param>
+		</layout>
+	</appender>  
+    
+
+
+    <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
+    <logger name="org.springframework.security">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="org.apache">
+        <level value="WARN"/>
+    </logger>
+
+    <logger name="org.apache.velocity">
+        <level value="FATAL"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="INFO"/>
+    </logger>
+   
+    <logger name="com.itheima">
+        <level value="INFO"/>
+    </logger>
+  
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+        <!-- <appender-ref ref="dailyRollingFile"/> -->
+    </root>
+
+</log4j:configuration>
