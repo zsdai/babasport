@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<!--日志存放路径 -->
+	<property name="BASE_CMD_LOG_HOME" value="/opt/applog/babasport/logback" />
+	<!--达到设置值的时候自动压缩 -->
+	<property name="MAX_FILE_SIZE" value="100MB" />
+	<!--日志文件保留天数 -->
+	<property name="MAX_HISTORY" value="30" />
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss,SSS}[%level][%thread]-%msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="sysout" value="off" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	<!-- 后台日志 -->
+	<appender name="consoleloginfo"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BASE_CMD_LOG_HOME}/consoleloginfo.log</file>
+		<encoder>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss}[%level][%thread][%logger]-%msg%n
+			</pattern>
+		</encoder>
+		<!-- 只打印INFO日志 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${BASE_CMD_LOG_HOME}/consoleloginfo.%d{yyyyMMdd}.%i.log.zip
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<appender name="consolelogerror"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${BASE_CMD_LOG_HOME}/consolelogerror.log</file><!-- D:/ed/ -->
+		<encoder>
+			<pattern>%date{yyyy-MM-dd HH:mm:ss}[%level][%thread][%logger]-%msg%n
+			</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${BASE_CMD_LOG_HOME}/consolelogerror.%d{yyyyMMdd}.%i.log.zip
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>${MAX_HISTORY}</maxHistory>
+		</rollingPolicy>
+	</appender>
+	<logger name="consolelog" value="INFO" additivity="false">
+		<appender-ref ref="consoleloginfo" />
+		<appender-ref ref="consolelogerror" />
+	</logger>
+	<!-- Root Logger -->
+	<root level="CONSOLE">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DEBUG" />
+		<appender-ref ref="INFO" />
+		<appender-ref ref="WARN" />
+		<appender-ref ref="ERROR" />
+	</root>
+</configuration>

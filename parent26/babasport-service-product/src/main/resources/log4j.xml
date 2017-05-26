@@ -14,15 +14,27 @@
 	<appender name="dailyRollingFile" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="Threshold" value="info"></param>	
 		<param name="ImmediateFlush" value="true"></param>
-		<!-- <param name="File" value="/opt/applog/bbs.log"></param> -->
-		<param name="File" value="D:/opt/applog/bbs.log"></param>
+		<!-- <param name="File" value="/opt/applog/babasport/bbs.log"></param> -->
+		<param name="File" value="D:/opt/applog/babasport/bbs.log"></param>
 		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d %-5p [%c{1}] [%t] %m%n"></param>
 		</layout>
 	</appender>  
-    
-
+    <appender name="COLLECTEDLOG" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Threshold" value="info"></param>	
+		<param name="ImmediateFlush" value="true"></param>
+		<!-- <param name="File" value="/opt/applog/babasport/bbs.log"></param> -->
+		<param name="File" value="D:/opt/applog/babasport/collectedLog.log"></param>
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'"></param>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c{1}] [%t] %m%n"></param>
+		</layout>
+	</appender>
+	<logger name="collectdlog">
+        <level value="INFO"/>
+        <appender-ref ref="COLLECTEDLOG"/>
+    </logger>
 
     <!-- Suppress success logging from InteractiveAuthenticationSuccessEvent -->
     <logger name="org.springframework.security">
