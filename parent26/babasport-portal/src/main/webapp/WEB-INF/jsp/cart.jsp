@@ -36,6 +36,9 @@
 		</ul>
 	</div>
 </div>
+<c:if test="${fn:length(buyerCart.items)>0 }">
+</c:if>
+<c:if test="${fn:length(buyerCart.items)==0}"></c:if>
 <div class="w cart">
 	<div class="cart-hd group">
 		<h2>我的购物车</h2>
