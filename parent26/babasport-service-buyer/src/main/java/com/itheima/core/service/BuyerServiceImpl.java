@@ -1,5 +1,6 @@
 package com.itheima.core.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,8 +12,12 @@ import org.springframework.stereotype.Service;
 import com.itheima.common.utils.StringUtils;
 import com.itheima.core.BuyItem;
 import com.itheima.core.BuyerCart;
+import com.itheima.core.bean.order.Detail;
+import com.itheima.core.bean.order.Order;
 import com.itheima.core.bean.product.Sku;
 import com.itheima.core.bean.user.Buyer;
+import com.itheima.core.dao.order.DetailDao;
+import com.itheima.core.dao.order.OrderDao;
 import com.itheima.core.dao.product.ColorDao;
 import com.itheima.core.dao.product.ProductDao;
 import com.itheima.core.dao.product.SkuDao;
@@ -39,6 +44,13 @@ public class BuyerServiceImpl implements BuyerService{
 	
 	@Autowired
 	private Jedis jedis;
+	
+	@Autowired
+	private OrderDao orderDao;
+	
+	//订单详情
+	@Autowired
+	private DetailDao detailDao;
 	
 	public Buyer getBuyerByUsername(String username){
 		
@@ -135,5 +147,80 @@ public class BuyerServiceImpl implements BuyerService{
 			}
 		}
 		return buyerCart;
+	}
+	
+	
+	/**
+	 * 保存订单和订单详情
+	 */
+	public void insertOrder(Order order,String username){
+		//订单表
+		//ID、订单编号   由Redis生成
+		Long id = jedis.incr("oid");
+		order.setId(id);
+		//运费       由购物车提供
+		BuyerCart buyerCart = getBuyerCartFromRedis(username);
+		List<BuyItem> items = buyerCart.getItems();
+		if(items.size()>0){
+			for (BuyItem buyItem : items) {
+				 buyItem.setSku(getSkuById(buyItem.getSku().getId()));
+			}
+		}
+		order.setDeliverFee(buyerCart.getFee());
+		//总价
+		order.setTotalPrice(buyerCart.getTotal());
+		//订单价
+		order.setOrderPrice(buyerCart.getProductPrice() );
+		//支付方式    由页面传递
+		//支付要求    
+		//留言       
+		//送货方式   略
+		//电话确认   略
+		//支付状态   :0到付1待付款,2已付款,3待退款,4退款成功,5退款失败
+		if(order.getPaymentWay()==1){
+			order.setIsPaiy(0);
+		}else{
+			order.setIsPaiy(1);
+		}
+		//订单状态 0:提交订单 1:仓库配货 2:商品出库 3:等待收货 4:完成 5待退货 6已退货
+		order.setOrderState(0);
+		//时间：     由程序提供
+		order.setCreateDate(new Date());
+		//用户ID   由程序提供
+		order.setBuyerId(Long.parseLong(jedis.get(username)));
+		
+		orderDao.insertSelective(order);
+		
+		
+		
+		//订单详情表
+		Detail detail;
+		for (BuyItem buyItem : items) {
+			detail = new Detail();
+			//Id   自增长
+			//detail.setId(id);
+			//订单ID  
+			detail.setOrderId(id);
+			//商品ID（编号）   由购物车中购物项
+			detail.setProductId(buyItem.getSku().getProductId());
+			//商品名称
+			detail.setProductName(buyItem.getSku().getProduct().getName());
+			//颜色名称
+			detail.setColor(buyItem.getSku().getColor().getName());
+			//尺码名称
+			detail.setSize(buyItem.getSku().getSize());
+			//价格
+			detail.setPrice(buyItem.getSku().getPrice());
+			//数量、    快照
+			detail.setAmount(buyItem.getAmount());
+			
+			detailDao.insertSelective(detail);
+		}
+		
+		//删除购物车中的商品
+		jedis.del("buyerCart:"+username);
+		//如果是只选择了购物车中的部分商品购买，那么需要指定删除
+		//jedis.hdel(key, fields)
+		
 	}
 }

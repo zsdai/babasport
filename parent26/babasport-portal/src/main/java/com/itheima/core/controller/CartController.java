@@ -18,6 +18,7 @@ import com.itheima.common.web.Constans;
 import com.itheima.common.web.RequestUtils;
 import com.itheima.core.BuyItem;
 import com.itheima.core.BuyerCart;
+import com.itheima.core.bean.order.Order;
 import com.itheima.core.bean.product.Sku;
 import com.itheima.core.service.BuyerService;
 import com.itheima.core.service.SessionProvider;
@@ -194,10 +195,43 @@ public class CartController {
 	 * @return
 	 */
 	@RequestMapping(value="/buyer/trueBuy")
-	public String trueBuy(Long[] ids){
-		//1、判断用户是否登陆   1）未登陆 跳转到登陆页面 跳转到首页  2）登陆 放行
+	public String trueBuy(Long[] ids,HttpServletRequest  request,
+			HttpServletResponse response,Model model){
+		//1、判断用户是否登陆   1）未登陆 跳转到登陆页面 跳转到首页  2）登陆 放行  由BuyInterceptor拦截器完成
 		//2、判断购物车中是否有商品 1）无商品 刷新购物车页面进行提示 2）有商品  继续判断
-		//3、判断购物车中商品是否有货 1）无货 刷新购物车页面进行无货提示 2）有货  真过了进入订单提交页面
+		String username = sessionProvider.getAttributeOfUsername(RequestUtils.getCSESSIONID(request, response));
+		BuyerCart buyerCart = buyerService.getBuyerCartFromRedis(username);
+		List<BuyItem> items = buyerCart.getItems();
+		if(items.size()>0){
+			//3、判断购物车中商品是否有货 1）无货 刷新购物车页面进行无货提示 2）有货  真过了进入订单提交页面
+			//装满购物车
+			boolean flag=false;
+			for (BuyItem buyItem : items) {
+				buyItem.setSku(buyerService.getSkuById(buyItem.getSku().getId()));
+				if(buyItem.getAmount()>buyItem.getSku().getStock()){
+					buyItem.setIsHave(false);
+					flag=true;
+				}
+			}
+			if(flag){
+				//存在无货商品
+				model.addAttribute("buyerCart", buyerCart);
+				return "cart";
+			}
+		}else{
+			//无商品 刷新购物车页面进行提示
+			return "redirect:/shopping/toCartList";
+		}
 		return "order-cart";
+	}
+	
+	//提交订单
+	@RequestMapping(value="/buyer/submitOrder")
+	public String submitOrder(Order order,HttpServletRequest  request,
+			HttpServletResponse response){
+		String username = sessionProvider.getAttributeOfUsername(RequestUtils.getCSESSIONID(request, response));
+		buyerService.insertOrder(order, username);
+		//返回值：订单号 快递方式  预计送达时间
+		return "success";
 	}
 }
