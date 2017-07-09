@@ -67,7 +67,7 @@ function changefq(thisObj,removeName){
 		url=url+"?price="+modelprice;
 	}
 	$(thisObj).remove();
-	window.location.href=url;
+	window.location.href=url+"&keyword="+modelkeyword;
 }
 </script>
 <script type="text/javascript" src="/js/base-2011.js" charset="utf-8"></script>

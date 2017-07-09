@@ -20,7 +20,7 @@
 				<ul id="shelper" class="hide">
 				</ul>
 				<div class="form">
-					<input type="text" value="<c:if test="${empty keyword }">2016</c:if> <c:if test="${!empty keyword }">${keyword }</c:if>" 
+					<input type="text" value="<c:if test="${empty keyword }">2017</c:if><c:if test="${!empty keyword }">${keyword }</c:if>" 
 					class="text" 
 					accesskey="s" id="keyword" name="keyword" autocomplete="off" 
 					onkeydown="javascript:if(event.keyCode==13) search();" >

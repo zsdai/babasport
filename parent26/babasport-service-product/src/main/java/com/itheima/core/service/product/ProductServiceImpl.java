@@ -12,6 +12,7 @@ import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itheima.common.log.BaLogger;
 import com.itheima.core.bean.product.Product;
 import com.itheima.core.bean.product.ProductQuery;
 import com.itheima.core.bean.product.Sku;
@@ -68,6 +69,7 @@ public class ProductServiceImpl implements ProductService{
 		productQuery.setPageNo(pagination.getPageNo());
 		pagination.setList(productDao.selectByExample(productQuery));
 		pagination.pageView("/product/list.do", params.toString());
+		BaLogger.PRODUCT.info("查询商品信息成功!");
 		return pagination;
 	}
 	/**  

@@ -27,12 +27,21 @@ public class ProductController {
 	@Autowired
 	private ColorService colorService;
 	
+	/**
+	 * @param pageNo
+	 * @param name
+	 * @param brandId 品牌ID
+	 * @param isShow 是否上架
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/product/list.do")
 	public String list(Integer pageNo,String name,Long brandId,Boolean isShow,Model model){
 		Pagination pagination = productService.getPaginationByCondition(pageNo, name, brandId, isShow);
 		model.addAttribute("pagination", pagination);
 		List<Brand> brandList = brandService.queryBrandByCondition("", 1);
 		model.addAttribute("brandList", brandList);
+		model.addAttribute("isShow", isShow);
 		return "product/list";
 	}
 	@RequestMapping("/product/toAdd.do")

@@ -42,8 +42,8 @@ function isSale(name,brandId,isShow,pageNo){
 <form action="/product/list.do" method="post" style="padding-top:5px;">
 名称: <input type="text" name="name" value="${name}"/>
 	<select name="brandId" value="${brandId }">
+		<option value="">请选择品牌</option>
 		<c:forEach items="${brandList }" var="brand">
-			<option value="">请选择品牌</option>
 			<option value="${brand.id}" <c:if test="${brand.id==brandId}">selected="selected"</c:if> >${brand.name}</option>
 		</c:forEach>
 	</select>

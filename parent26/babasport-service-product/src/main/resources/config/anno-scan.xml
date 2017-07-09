@@ -1,10 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
 		http://www.springframework.org/schema/mvc 
@@ -19,7 +17,17 @@
    		http://www.springframework.org/schema/task/spring-task-4.0.xsd
 		http://code.alibabatech.com/schema/dubbo        
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-		
-		<!-- 注解扫描-->
-		<context:component-scan base-package="com.itheima"></context:component-scan>
+
+	<!-- 激活注解配置 -->
+	<context:annotation-config />
+
+	<!-- 启动@AspectJ支持 -->
+	<aop:aspectj-autoproxy />
+	
+	<!-- 注解扫描 -->
+	<context:component-scan base-package="com.itheima">
+		<context:include-filter type="annotation"
+			expression="org.aspectj.lang.annotation.Aspect" />
+	</context:component-scan>
+
 </beans>
